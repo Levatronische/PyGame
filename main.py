@@ -5,7 +5,7 @@ from OpenGL.GLU import *
 import math
 import random
 
-WIDTH, HEIGHT = 1920, 1080
+WIDTH, HEIGHT = 2560, 1440
 
 
 first_map = [[(0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0)],
@@ -50,15 +50,35 @@ time_play = 0.0
 x_speed = 0.1
 y_speed = 0.1
 
-y_coll_list = []
-x_coll_lost = []
+d_x = 0
+d_y = 0
+
+forward_backward = 0
+right_left = 0
+
+v_coll_list = [(-7, 7, 6.7, 7), (-7, 7, -7, -6.7)]
+h_coll_list = [(-7, 7, 6.7, 7), (-7, 7, -7, -6.7)]
 
 
-def check_y_coll(cam_loc_x, cam_loc_y):
-    global y_coll_list
-    for i in y_coll_list:
-        if i(cam_loc_x, cam_loc_y):
-            return True
+def check_h_coll(cam_loc_x, cam_loc_y):
+    global h_coll_list
+#    print(cam_loc_x, cam_loc_y)
+    for i in h_coll_list:
+        if i[0] <= cam_loc_x <= i[1]:
+            if i[2] <= cam_loc_y <= i[3]:
+                print("coll h")
+                return True
+    return False
+
+
+def check_v_coll(cam_loc_x, cam_loc_y):
+    global v_coll_list
+#    print(cam_loc_x, cam_loc_y)
+    for i in v_coll_list:
+        if i[0] <= cam_loc_y <= i[1]:
+            if i[2] <= cam_loc_x <= i[3]:
+                print("coll v")
+                return True
     return False
 
 
@@ -368,26 +388,59 @@ while run:
             glTranslatef(0, 0, 2)
             in_start = False
 
-        if keypress[pygame.K_w]:
-            glTranslatef(0, 0, 0.1)
-            cam_loc[0] += math.sin(math.radians(left_right_angle)) * x_speed
-            cam_loc[1] += math.cos(math.radians(left_right_angle)) * y_speed
-        if keypress[pygame.K_s]:
-            glTranslatef(0, 0, -0.1)
-            cam_loc[0] += math.sin(math.radians(left_right_angle)) * -x_speed
-            cam_loc[1] += math.cos(math.radians(left_right_angle)) * -y_speed
-        if keypress[pygame.K_d]:
-            glTranslatef(-0.1, 0, 0)
-            cam_loc[0] += math.sin(math.radians(90 - left_right_angle)) * x_speed
-            cam_loc[1] += math.cos(math.radians(90 - left_right_angle)) * -y_speed
-        if keypress[pygame.K_a]:
-            glTranslatef(0.1, 0, 0)
-            cam_loc[0] += math.sin(math.radians(90 - left_right_angle)) * -x_speed
-            cam_loc[1] += math.cos(math.radians(90 - left_right_angle)) * y_speed
+        d_x = 0
+        d_y = 0
+
+        forward_backward = 0
+        right_left = 0
+
+        if keypress[pygame.K_w] or keypress[pygame.K_UP]:
+#            glTranslatef(0, 0, 0.1)
+            d_x += math.sin(math.radians(left_right_angle)) * x_speed
+            d_y += math.cos(math.radians(left_right_angle)) * y_speed
+            forward_backward += 0.1
+        if keypress[pygame.K_s] or keypress[pygame.K_DOWN]:
+#            glTranslatef(0, 0, -0.1)
+            d_x += math.sin(math.radians(left_right_angle)) * -x_speed
+            d_y += math.cos(math.radians(left_right_angle)) * -y_speed
+            forward_backward += -0.1
+        if keypress[pygame.K_d] or keypress[pygame.K_LEFT]:
+#            glTranslatef(-0.1, 0, 0)
+            d_x += math.sin(math.radians(90 - left_right_angle)) * x_speed
+            d_y += math.cos(math.radians(90 - left_right_angle)) * -y_speed
+            right_left += -0.1
+        if keypress[pygame.K_a] or keypress[pygame.K_RIGHT]:
+#            glTranslatef(0.1, 0, 0)
+            d_x += math.sin(math.radians(90 - left_right_angle)) * -x_speed
+            d_y += math.cos(math.radians(90 - left_right_angle)) * y_speed
+            right_left += 0.1
+
+
+        if check_h_coll(cam_loc[0] + d_x, cam_loc[1] + d_y):
+            d_y = 0
+            d_x = 0
+            if right_left != 0:
+                right_left = 0
+            if forward_backward != 0:
+                forward_backward = 0
+
+        if check_v_coll(cam_loc[0] + d_x, cam_loc[1] + d_y):
+            d_y = 0
+            d_x = 0
+            if right_left != 0:
+                right_left = 0
+            if forward_backward != 0:
+                forward_backward = 0
+
+
+        glTranslatef(right_left, 0, forward_backward)
+
+        cam_loc[0] += d_x
+        cam_loc[1] += d_y
 
         left_right_angle_world += mouseMove[0] * 0.1
         left_right_angle = left_right_angle_world - (left_right_angle_world // 360) * 360
-        print(f"ang:{left_right_angle}, x:{cam_loc[0]}, y:{cam_loc[1]}")
+#        print(f"ang:{left_right_angle}, x:{cam_loc[0]}, y:{cam_loc[1]}")
 
         glRotatef(mouseMove[0] * 0.1, 0.0, 1.0, 0.0)
 
@@ -408,7 +461,6 @@ while run:
 #        L_way([4, 0])
 #        I_way([6, 0])
 #        H_way([8, 0])
-        print(check_y_coll(cam_loc[0], cam_loc[1]))
         draw_map(test_map)
         #
         #
@@ -428,7 +480,6 @@ while run:
 #        print(cam_loc)
         glPushMatrix()
         glColor4f(0.545, 0, 1, 1)
-        gluSphere(sphere, 0.01, 32, 64)
         if have_key:
             glColor4f(0.545, 0, 1, 1)
             gluSphere(sphere, 1, 32, 64)
