@@ -35,6 +35,12 @@ small_map = [
     [(2, 180), (3, 90), (4, 180), (3, 90), (2, 270)]
 ]
 
+test_map = [
+    [(5, 90), (4, 0), (2, 0)],
+    [(2, 90), (4, 180), (4, 270)],
+    [(2, 180), (3, 90), (2, 270)]
+]
+
 cam_loc = [0, 0]
 cam_ang_xy = [0, 0]
 key_loc = [0, 0]
@@ -43,6 +49,19 @@ time_play = 0.0
 
 x_speed = 0.1
 y_speed = 0.1
+
+y_coll_list = []
+x_coll_lost = []
+
+
+def check_y_coll(cam_loc_x, cam_loc_y):
+    global y_coll_list
+    for i in y_coll_list:
+        if i(cam_loc_x, cam_loc_y):
+            return True
+    return False
+
+
 
 
 def prepare_map(g_map):
@@ -62,7 +81,6 @@ def prepare_map(g_map):
     x_origin_map = (len(g_map[0]) - 1) // 2
     y_pos = y_origin_map
     x_pos = -x_origin_map
-#    print(rx, ry, cell, x_pos, y_pos)
     key_loc = [(x_pos + rx) * 6, (y_pos - ry) * 6]
 
 
@@ -305,7 +323,7 @@ loadTexture()
 
 have_key = False
 
-prepare_map(small_map)
+prepare_map(test_map)
 
 while run:
     for event in pygame.event.get():
@@ -369,7 +387,7 @@ while run:
 
         left_right_angle_world += mouseMove[0] * 0.1
         left_right_angle = left_right_angle_world - (left_right_angle_world // 360) * 360
-#        print(left_right_angle)
+        print(f"ang:{left_right_angle}, x:{cam_loc[0]}, y:{cam_loc[1]}")
 
         glRotatef(mouseMove[0] * 0.1, 0.0, 1.0, 0.0)
 
@@ -390,7 +408,11 @@ while run:
 #        L_way([4, 0])
 #        I_way([6, 0])
 #        H_way([8, 0])
-        draw_map(small_map)
+        print(check_y_coll(cam_loc[0], cam_loc[1]))
+        draw_map(test_map)
+        #
+        #
+
         #
         #
         glPushMatrix()
