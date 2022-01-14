@@ -5,7 +5,7 @@ from OpenGL.GLU import *
 import math
 import random
 
-WIDTH, HEIGHT = 2560, 1440
+WIDTH, HEIGHT = 1920, 1080
 
 
 first_map = [[(0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0)],
@@ -56,8 +56,13 @@ d_y = 0
 forward_backward = 0
 right_left = 0
 
-v_coll_list = [(-7, 7, 6.7, 7), (-7, 7, -7, -6.7)]
-h_coll_list = [(-7, 7, 6.7, 7), (-7, 7, -7, -6.7)]
+v_coll_list = [(-7, 7, 6.7, 7), (-7, 7, -7, -6.7), (-5, -1, -5.3, -5), (-5, -1, 5, 5.3), (1, 5, 5, 5.3), (1, 5, 0.7, 1),
+               (1, 5, -1, -0.7)]
+
+h_coll_list = [(-7, 7, 6.7, 7), (-7, 7, -7, -6.7), (-5, 5, -1, -0.7), (-5, 5, -5.7, -5), (1, 5, 0.7, 1), (1, 5, 5, 5.3),
+               (-7, -1, 0.7, 1), (1, 4, 0.7, 1),
+               (-7, -1, 5, 5.3), (1, 4, 5, 5.3)]
+
 
 
 def check_h_coll(cam_loc_x, cam_loc_y):
@@ -73,7 +78,7 @@ def check_h_coll(cam_loc_x, cam_loc_y):
 
 def check_v_coll(cam_loc_x, cam_loc_y):
     global v_coll_list
-#    print(cam_loc_x, cam_loc_y)
+    print(cam_loc_x, cam_loc_y)
     for i in v_coll_list:
         if i[0] <= cam_loc_y <= i[1]:
             if i[2] <= cam_loc_x <= i[3]:
@@ -319,7 +324,7 @@ glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.6, 0.5, 0.3, 1])
 sphere = gluNewQuadric()
 
 glMatrixMode(GL_PROJECTION)
-gluPerspective(45, (display[0] / display[1]), 0.1, 500)
+gluPerspective(90, (display[0] / display[1]), 0.01, 500)
 
 glMatrixMode(GL_MODELVIEW)
 gluLookAt(0, -2, 0,
@@ -414,7 +419,6 @@ while run:
             d_x += math.sin(math.radians(90 - left_right_angle)) * -x_speed
             d_y += math.cos(math.radians(90 - left_right_angle)) * y_speed
             right_left += 0.1
-
 
         if check_h_coll(cam_loc[0] + d_x, cam_loc[1] + d_y):
             d_y = 0
