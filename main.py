@@ -445,7 +445,7 @@ while run:
 
         left_right_angle_world += mouseMove[0] * 0.1
         left_right_angle = left_right_angle_world - (left_right_angle_world // 360) * 360
-#        print(f"ang:{left_right_angle}, x:{cam_loc[0]}, y:{cam_loc[1]}")
+        print(f"ang:{left_right_angle}, x:{cam_loc[0]}, y:{cam_loc[1]}")
 
 
         glRotatef(mouseMove[0] * 0.1, 0.0, 1.0, 0.0)
@@ -496,6 +496,6 @@ while run:
         glPopMatrix()
 
         pygame.display.flip()
-        pygame.time.wait(10)
+        pygame.time.wait(100)
 
 pygame.quit()
