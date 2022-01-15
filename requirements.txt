@@ -2,3 +2,4 @@ pygame
 pyopengl
 math
 random
+numpy
