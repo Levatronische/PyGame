@@ -436,6 +436,7 @@ while run:
             if forward_backward != 0:
                 forward_backward = 0
 
+        print(forward_backward, right_left)
 
         glTranslatef(right_left, 0, forward_backward)
 
@@ -445,6 +446,7 @@ while run:
         left_right_angle_world += mouseMove[0] * 0.1
         left_right_angle = left_right_angle_world - (left_right_angle_world // 360) * 360
 #        print(f"ang:{left_right_angle}, x:{cam_loc[0]}, y:{cam_loc[1]}")
+
 
         glRotatef(mouseMove[0] * 0.1, 0.0, 1.0, 0.0)
 
