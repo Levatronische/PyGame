@@ -36,9 +36,9 @@ small_map = [
 ]
 
 test_map = [
-    [(5, 90), (4, 0), (2, 0)],
-    [(2, 90), (4, 180), (4, 270)],
-    [(2, 180), (3, 90), (2, 270)]
+    [(5, 0), (0, 0), (0, 0)],
+    [(2, 90), (2, 0), (0, 0)],
+    [(0, 0), (0, 0), (0, 0)]
 ]
 
 cam_loc = [0, 0]
@@ -75,7 +75,42 @@ def build_coll(cell, origin_loc=None):
         h_coll_list.append((origin_loc[0] + 2, origin_loc[1] - 1))
         h_coll_list.append((origin_loc[0] - 2, origin_loc[1] + 1))
         h_coll_list.append((origin_loc[0] - 2, origin_loc[1] - 1))
+
     elif cell == (2, 0):
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1]))
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1] - 2))
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1] - 2))
+
+        h_coll_list.append((origin_loc[0], origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] - 2, origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] - 2, origin_loc[1] - 1))
+
+    elif cell == (2, 90):
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1]))
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1] - 2))
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1] - 2))
+
+        h_coll_list.append((origin_loc[0], origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] + 2, origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] + 2, origin_loc[1] - 1))
+
+    elif cell == (2, 180):
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1]))
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1] - 2))
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1] - 2))
+
+        h_coll_list.append((origin_loc[0], origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] - 2, origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] - 2, origin_loc[1] - 1))
+
+    elif cell == (2, 270):
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1]))
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1] - 2))
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1] - 2))
+
+        h_coll_list.append((origin_loc[0], origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] - 2, origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] - 2, origin_loc[1] - 1))
 
 
 
@@ -126,7 +161,7 @@ def prepare_map(g_map):
     for yl in range(len(g_map)):
         x_pos = -x_origin_map
         for xl in range(len(g_map[yl])):
-            build_coll(g_map[yl][xl], [x_pos, y_pos])
+            build_coll(g_map[yl][xl], [x_pos * 6, y_pos * 6])
             x_pos += 1
         y_pos -= 1
 
@@ -374,7 +409,7 @@ loadTexture()
 
 have_key = False
 
-prepare_map(small_map)
+prepare_map(test_map)
 
 while run:
     for event in pygame.event.get():
@@ -488,7 +523,7 @@ while run:
         #
         #
         #
-        draw_map(small_map)
+        draw_map(test_map)
         #
         #
         #
