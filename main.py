@@ -36,9 +36,9 @@ small_map = [
 ]
 
 test_map = [
-    [(5, 0), (0, 0), (0, 0)],
-    [(0, 0), (4, 90), (0, 0)],
-    [(0, 0), (4, 270), (0, 0)]
+    [(5, 0), (0, 0), (5, 90)],
+    [(0, 0), (0, 0), (0, 0)],
+    [(5, 270), (0, 0), (5, 180)]
 ]
 
 cam_loc = [0, 0]
@@ -168,10 +168,81 @@ def build_coll(cell, origin_loc=None):
         h_coll_list.append((origin_loc[0] - 2, origin_loc[1] + 1))
         h_coll_list.append((origin_loc[0] - 2, origin_loc[1] - 1))
 
+    elif cell == (4, 0):
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1] - 2))
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1] - 2))
+
+        h_coll_list.append((origin_loc[0], origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] - 2, origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] + 2, origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] - 2, origin_loc[1] - 1))
+        h_coll_list.append((origin_loc[0] + 2, origin_loc[1] - 1))
+
+    elif cell == (4, 90):
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1] + 2))
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1] - 2))
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1]))
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1] + 2))
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1] - 2))
+
+        h_coll_list.append((origin_loc[0] + 2, origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] + 2, origin_loc[1] - 1))
+
+    elif cell == (4, 180):
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1] + 2))
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1] + 2))
+
+        h_coll_list.append((origin_loc[0], origin_loc[1] - 1))
+        h_coll_list.append((origin_loc[0] - 2, origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] + 2, origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] - 2, origin_loc[1] - 1))
+        h_coll_list.append((origin_loc[0] + 2, origin_loc[1] - 1))
+
+    elif cell == (4, 270):
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1]))
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1] + 2))
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1] - 2))
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1] + 2))
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1] - 2))
+
+        h_coll_list.append((origin_loc[0] - 2, origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] - 2, origin_loc[1] - 1))
+
+    elif cell == (5, 0):
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1]))
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1] - 2))
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1]))
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1] - 2))
+
+        h_coll_list.append((origin_loc[0], origin_loc[1] + 1))
+
+    elif cell == (5, 90):
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1]))
+
+        h_coll_list.append((origin_loc[0], origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] + 2, origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0], origin_loc[1] - 1))
+        h_coll_list.append((origin_loc[0] + 2, origin_loc[1] - 1))
+
+    elif cell == (5, 180):
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1]))
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1] + 2))
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1]))
+        v_coll_list.append((origin_loc[0] - 1, origin_loc[1] + 2))
+
+        h_coll_list.append((origin_loc[0], origin_loc[1] - 1))
+
+    elif cell == (5, 270):
+        v_coll_list.append((origin_loc[0] + 1, origin_loc[1]))
+
+        h_coll_list.append((origin_loc[0], origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0] - 2, origin_loc[1] + 1))
+        h_coll_list.append((origin_loc[0], origin_loc[1] - 1))
+        h_coll_list.append((origin_loc[0] - 2, origin_loc[1] - 1))
+
 
 def check_h_coll(cam_loc_x, cam_loc_y):
     global h_coll_list
-    #    print(cam_loc_x, cam_loc_y)
     for i in h_coll_list:
         if (i[0] + 1 >= cam_loc_x >= i[0] - 1) \
                 and (i[1] + 0.2 >= cam_loc_y >= i[1] - 0.2):
@@ -182,7 +253,6 @@ def check_h_coll(cam_loc_x, cam_loc_y):
 
 def check_v_coll(cam_loc_x, cam_loc_y):
     global v_coll_list
-    print(cam_loc_x, cam_loc_y)
     for i in v_coll_list:
         if (i[0] + 0.2 >= cam_loc_x >= i[0] - 0.2) \
                 and (i[1] + 1 >= cam_loc_y >= i[1] - 1):
