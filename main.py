@@ -7,6 +7,12 @@ import random
 
 WIDTH, HEIGHT = 1600/1.5, 900/1.5
 
+sky_box_long = 500
+
+sky_box = [open("sky_box/back.png"), open("sky_box/bottom.png"),
+           open("sky_box/front.png"), open("sky_box/left.png"),
+           open("sky_box/right.png"), open("sky_box/top.png"), ]
+
 first_map = [
     [(0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0)],
     [(0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0), (0, 0)],
@@ -59,6 +65,41 @@ right_left = 0
 v_coll_list = []
 
 h_coll_list = []
+
+
+def build_sky_box():
+    glBegin(GL_QUADS)
+    glColor4f(1, 0, 0, 1)
+    glVertex3f(-1 * sky_box_long, -1 * sky_box_long, -1 * sky_box_long)
+    glVertex3f(1 * sky_box_long, -1 * sky_box_long, -1 * sky_box_long)
+    glVertex3f(1 * sky_box_long, -1 * sky_box_long, 1 * sky_box_long)
+    glVertex3f(-1 * sky_box_long, -1 * sky_box_long, 1 * sky_box_long)
+
+    glVertex3f(1 * sky_box_long, -1 * sky_box_long, -1 * sky_box_long)
+    glVertex3f(1 * sky_box_long, 1 * sky_box_long, -1 * sky_box_long)
+    glVertex3f(1 * sky_box_long, 1 * sky_box_long, 1 * sky_box_long)
+    glVertex3f(1 * sky_box_long, -1 * sky_box_long, 1 * sky_box_long)
+
+    glVertex3f(1 * sky_box_long, 1 * sky_box_long, -1 * sky_box_long)
+    glVertex3f(-1 * sky_box_long, 1 * sky_box_long, -1 * sky_box_long)
+    glVertex3f(-1 * sky_box_long, 1 * sky_box_long, 1 * sky_box_long)
+    glVertex3f(1 * sky_box_long, 1 * sky_box_long, 1 * sky_box_long)
+
+    glVertex3f(-1 * sky_box_long, 1 * sky_box_long, -1 * sky_box_long)
+    glVertex3f(-1 * sky_box_long, -1 * sky_box_long, -1 * sky_box_long)
+    glVertex3f(-1 * sky_box_long, -1 * sky_box_long, 1 * sky_box_long)
+    glVertex3f(-1 * sky_box_long, 1 * sky_box_long, 1 * sky_box_long)
+
+    glVertex3f(-1 * sky_box_long, -1 * sky_box_long, 1 * sky_box_long)
+    glVertex3f(1 * sky_box_long, -1 * sky_box_long, 1 * sky_box_long)
+    glVertex3f(1 * sky_box_long, 1 * sky_box_long, 1 * sky_box_long)
+    glVertex3f(-1 * sky_box_long, 1 * sky_box_long, 1 * sky_box_long)
+
+    glVertex3f(-1 * sky_box_long, -1 * sky_box_long, -1 * sky_box_long)
+    glVertex3f(1 * sky_box_long, -1 * sky_box_long, -1 * sky_box_long)
+    glVertex3f(1 * sky_box_long, 1 * sky_box_long, -1 * sky_box_long)
+    glVertex3f(-1 * sky_box_long, 1 * sky_box_long, -1 * sky_box_long)
+    glEnd()
 
 
 def build_coll(cell, origin_loc=None):
@@ -509,7 +550,7 @@ glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.6, 0.5, 0.3, 1])
 sphere = gluNewQuadric()
 
 glMatrixMode(GL_PROJECTION)
-gluPerspective(75, (display[0] / display[1]), 0.01, 500)
+gluPerspective(75, (display[0] / display[1]), 0.01, 5000)
 
 glMatrixMode(GL_MODELVIEW)
 gluLookAt(0, -2, 0,
@@ -533,7 +574,7 @@ loadTexture()
 
 have_key = False
 
-prepare_map(test_map)
+prepare_map(small_map)
 
 while run:
     for event in pygame.event.get():
@@ -647,11 +688,13 @@ while run:
         #
         #
         #
-        draw_map(test_map)
+        draw_map(small_map)
         #
         #
         #
         glPushMatrix()
+
+        build_sky_box()
 
         glColor4f(1, 0.843, 0, 1)
 
