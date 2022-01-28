@@ -5,7 +5,7 @@ from OpenGL.GLU import *
 import math
 import random
 
-WIDTH, HEIGHT = 1600/1.5, 900/1.5
+WIDTH, HEIGHT = 1600, 900
 
 sky_box_long = 500
 
@@ -69,7 +69,7 @@ h_coll_list = []
 
 def build_sky_box():
     glBegin(GL_QUADS)
-    glColor4f(1, 0, 0, 1)
+    glColor4f(0.6, 0.7, 1, 1)
     glVertex3f(-1 * sky_box_long, -1 * sky_box_long, -1 * sky_box_long)
     glVertex3f(1 * sky_box_long, -1 * sky_box_long, -1 * sky_box_long)
     glVertex3f(1 * sky_box_long, -1 * sky_box_long, 1 * sky_box_long)
@@ -331,9 +331,6 @@ def prepare_map(g_map):
         y_pos -= 1
 
 
-
-
-
 def loadTexture():
     texture_surface = pygame.image.load('Tex_Map.jpg')
     texture_data = pygame.image.tostring(texture_surface, "RGBA")
@@ -544,7 +541,7 @@ glEnable(GL_COLOR_MATERIAL)
 glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE)
 
 glEnable(GL_LIGHT0)
-glLightfv(GL_LIGHT0, GL_AMBIENT, [0.4, 0.4, 0.4, 1])
+glLightfv(GL_LIGHT0, GL_AMBIENT, [0.5, 0.5, 0.55, 1])
 glLightfv(GL_LIGHT0, GL_DIFFUSE, [0.6, 0.5, 0.3, 1])
 
 sphere = gluNewQuadric()
