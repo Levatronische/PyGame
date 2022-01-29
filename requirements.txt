@@ -3,3 +3,4 @@ pyopengl
 math
 random
 numpy
+PyQt5
